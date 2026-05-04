@@ -1,0 +1,5 @@
+{
+  "name": "my-service",
+  "public": false,
+  "env": "prod"
+}

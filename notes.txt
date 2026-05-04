@@ -1,0 +1,30 @@
+RUN OPA USING DOCKER
+docker run -d -p 8181:8181 --name opa openpolicyagent/opa run --server --addr :8181
+
+UPLOAD POLICY
+curl -X PUT http://localhost:8181/v1/policies/auth \
+  --data-binary @auth.rego
+
+
+TEST OPA BEFORE EXPRESS
+curl -X PUT http://localhost:8181/v1/policies/auth \
+  --data-binary @auth.rego
+
+TEST OPA AFTER APP SETUP
+curl -X POST http://localhost:8181/v1/policies/auth/allow -H "Content-Type: applicatntent-Type: application/json" -d "{\"input\": {\"user\": {\"role\": "admin\"}}}"  
+
+
+SCRIPT for POSTMAN
+POST REQUEST
+http://localhost:8181/v1/data/auth/allow
+json
+{
+  "input": {
+    "user": {
+      "role": "admin",
+      "id": 1
+    },
+    "resource": "profile",
+    "action": "update"
+  }
+}
